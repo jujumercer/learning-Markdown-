@@ -1,0 +1,165 @@
+---
+title: "juliane mercer"
+author: "jujumercer"
+date: "11/19/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Dillinger
+Juliane Mercer
+BIOINFORMATIC DISCIPLINE WORK
+18th november, 2019
+
+CREATE A FUNCTION AND A HELP DOCUMENT
+
+# Presentation
+Function: Comparing the mithocondrial nucleotide sequences of tigre (Panthera tigris) and jaguar (Panthera onca). 
+>First step will be to search dataframes with the nucleotide sequence for both species, in NCBI  (https://www.ncbi.nlm.nih.gov/).
+
+# Functions Creating
+Finding similarities among mitocondrial nucleotide sequences among the 2 especies Panthera tigris e Panthera onca. 
+1. In NCBI search for fasta files of mithocondrial sequence for both species and I saved the fasta format at the c:desktop/bioinformatica/
+
+Table1. Mitochondrion, complete genome 
+| **Species**     | Name  |Number bp | ID sequence     |
+| :---        | :----:   |   :----:   |          ---: |
+| *Panthera tigris* | Tiger      | 15990bp       | [NC_010642.1](https://www.ncbi.nlm.nih.gov/nuccore/NC_010642.1)   |
+| *Panthera onca* | Jaguar  | 16049bp        | [NC_022842.1]((https://www.ncbi.nlm.nih.gov/nuccore/NC_022842.1))      |
+
+2. Install the library (**seqinr**) Biological Sequences Retrieval and Analysis.
+Exploratory data analysis and data visualization for biological sequence (DNA and protein) data. Seqinr includes utilities for sequence data management under the ACNUC system described in Gouy, M. et al. (1984) Nucleic Acids Res. 12:121-127 <doi:10.1093/nar/12.1Part1.121>
+
+Function for Specie X dataframe input and sequence read (*P.tigris*)
+~~~ 
+library(seqinr)
+{(x<-read.fasta(file.choose()) #ctrl+enter:find the fasta file of the x specie
+head(x)
+x_seq <-x$(id:x) 
+head(x_seq)}
+~~~
+Function for Specie y dataframe input and sequence read (*P.onca*)
+~~~
+{(y<-read.fasta(file.choose()) #ctrl+enter:find the fasta file of the x specie
+head(y)
+y_seq <-y$(id:y) 
+head(y_seq)}
+~~~
+Example:
+> library(seqinr) press enter 
+> tigris<-read.fasta(file.choose()) press ctrl+enter and choose the file fasta
+> head(tigris) will appear the code of the sequence and the rows of nucleotides
+$NC_010642.1
+   [1] "g" "g" "g" "t" "t" "a" "a" "t" "g" "a" "c" "t" "a" "a" "t" "c" "a" "g" "c" "c" "c"
+[1] "NC_010642.1"
+attr(,"Annot")
+[1] ">NC_010642.1 Panthera tigris mitochondrion, complete genome"
+attr(,"class")
+[1] "SeqFastadna"
+
+now will create an object "tigris_seq"
+>tigris_seq <- tigris$NC_010642.1 obs: $ is to splice
+> head(tigris_seq)
+[1] "g" "g" "g" "t" "t" "a" : this is the user created object
+
+
+onca<-read.fasta(file.choose())
+> head(onca)
+$NC_022842.1
+   [1] "g" "g" "g" "t" "t" "a" "a" "t" "g" "a" "c" "t" "a" "a" "t" "c" "a" "g" "c" "c" "c"
+onca_seq<- onca$NC_022842.1
+> head(onca_seq)
+[1] "g" "g" "g" "t" "t" "a"
+
+now we are going to use the function Table to see how many nucleotides there are in each specie we are analysing:
+>table(tigris_seq)
+>tigris_seq
+   a    c    g    t 
+5418 4513 2478 4581 
+> table(onca_seq)
+onca_seq
+   a    c    g    t 
+5447 4509 2466 4627 
+
+>var.test((table(tigris_seq)), (table(onca_seq)))
+	F test to compare two variances
+	The test statistic can be obtained by computing the ratio of the two variances S2A and S2B. F=S2A/S2B
+The degrees of freedom are nA−1 (for the numerator) and nB−1 (for the denominator).
+Note that, the more this ratio deviates from 1, the stronger the evidence for unequal population variances.
+Note that, the F-test requires the two samples to be normally distributed.
+
+data:  (table(tigris_seq)) and (table(onca_seq))
+F = 0.97074, num df = 3, denom df = 3, p-value = 0.9811
+alternative hypothesis: true ratio of variances is not equal to 1
+95 percent confidence interval:
+  0.06287497 14.98740207
+sample estimates:
+ratio of variances 
+         0.9707381 
+INTERPRETATION: The p-value of F-test is p = 0.9811 which is greater than the significance level 0.05. In conclusion, there is no significant difference between the two variances.
+      
+
+COEFICIENT CORRELATION 
+      Pearson correlation coefficient In statistics, the Pearson correlation coefficient (PCC, pronounced /ˈpɪərsən/), also referred to as Pearson's r, the Pearson product-moment correlation coefficient (PPMCC) or the bivariate correlation,[1] is a measure of the linear correlation between two variables X and Y. According to the Cauchy–Schwarz inequality it has a value between +1 and −1, where 1 is total positive linear correlation, 0 is no linear correlation, and −1 is total negative linear correlation.
+r_from_f<- function(f, df1, df2) {   return(sqrt(f/(f + (df1/df2))))}
+is not working,
+ r_from_f<- function(0.97074, 3, 3)
+Error: unexpected numeric constant in "r_from_f<- function(0.97074"
+
+The correlation coefficient of two variables in a data set equals to their covariance divided by the product of their individual standard deviations. It is a normalized measurement of how the two are linearly related.Formally, the sample correlation coefficient is defined by the following formula, where sx and sy are the sample standard deviations, and sxy is the sample covariance.
+rxy =(sxy/(sx sy))
+cor(table(tigris_seq), table(onca_seq))
+[1] 0.9998739
+      
+ TEST ANOTHER possible function: test another variance of F test
+ var.test(x, y, alternative = "two.sided")
+ var.test((table(tigris_seq)), (table(onca_seq)), alternative = "two.sided")
+	F test to compare two variances
+data:  (table(tigris_seq)) and (table(onca_seq))
+F = 0.97074, num df = 3, denom df = 3, p-value = 0.9811
+alternative hypothesis: true ratio of variances is not equal to 1
+95 percent confidence interval:
+  0.06287497 14.98740207
+sample estimates:
+ratio of variances 
+         0.9707381 
+PLOT COMPARING TWO GENOMES SEQUENCES FUNCTION
+comp_plot <- function(seq1, seq2){ 
++     par(mfrow = c(1,2))
++     barplot(table(seq1), col = 1:4)
++     barplot(table(seq2), col = 1:4)
++ }
+> comp_plot(tigris_seq, onca_seq)
+> my computer memory didn't support this image
+
+
+# Resultados Obtidos
+- Foi possivel colocar em pratica o que aprendeu-se em aula com a elaboracao deste trabalho. Uma das atividades que possibilitou escrever esse trabalho foi aprender a usar o pacote Markdown Editor. 
+- Foi possivel criar a funcao  proposta, e fica facil comparar duas sequencias nucleotidicas, tendo os arquivos fasta. 
+
+image png
+
+![Onca and tiger Mithocondrial nucleotide!](https://www.dropbox.com/preview/ONCA/oncaandtigernucleotideMithocondria16Mbp.png?role=personal)
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
