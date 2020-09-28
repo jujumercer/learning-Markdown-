@@ -16,12 +16,12 @@ BIOINFORMATIC DISCIPLINE WORK
 CREATE A FUNCTION AND A HELP DOCUMENT
 
 # Presentation
-Function: Comparing the mithocondrial nucleotide sequences of tigre (Panthera tigris) and jaguar (Panthera onca). 
+Function: Comparing the mitochondrial nucleotide sequences of tigre (Panthera tigris) and jaguar (Panthera onca). 
 >First step will be to search dataframes with the nucleotide sequence for both species, in NCBI  (https://www.ncbi.nlm.nih.gov/).
 
 # Functions Creating
-Finding similarities among mitocondrial nucleotide sequences among the 2 especies Panthera tigris e Panthera onca. 
-1. In NCBI search for fasta files of mithocondrial sequence for both species and I saved the fasta format at the c:desktop/bioinformatica/
+Finding similarities among mitochondrial nucleotide sequences among the 2 species Panthera tigris and Panthera onca. 
+1. In NCBI search for fasta files of mitochondrial sequence for both species and I saved the fasta format at the c:desktop/bioinformatica/
 
 Table1. Mitochondrion, complete genome 
 | **Species**     | Name  |Number bp | ID sequence     |
